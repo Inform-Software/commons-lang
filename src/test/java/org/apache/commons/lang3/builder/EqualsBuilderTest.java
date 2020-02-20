@@ -16,16 +16,17 @@
  */
 package org.apache.commons.lang3.builder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests {@link org.apache.commons.lang3.builder.EqualsBuilder}.
@@ -433,9 +434,9 @@ public class EqualsBuilderTest {
 
     @Test
     public void testObjectRecursiveGenericInteger() {
-        final TestRecursiveGenericObject<Integer> o1_a = new TestRecursiveGenericObject<Integer>(1);
-        final TestRecursiveGenericObject<Integer> o1_b = new TestRecursiveGenericObject<Integer>(1);
-        final TestRecursiveGenericObject<Integer> o2 = new TestRecursiveGenericObject<Integer>(2);
+        final TestRecursiveGenericObject<Integer> o1_a = new TestRecursiveGenericObject<>(1);
+        final TestRecursiveGenericObject<Integer> o1_b = new TestRecursiveGenericObject<>(1);
+        final TestRecursiveGenericObject<Integer> o2 = new TestRecursiveGenericObject<>(2);
 
         assertTrue(new EqualsBuilder().setTestRecursive(true).append(o1_a, o1_b).isEquals());
         assertTrue(new EqualsBuilder().setTestRecursive(true).append(o1_b, o1_a).isEquals());
@@ -447,9 +448,9 @@ public class EqualsBuilderTest {
     public void testObjectRecursiveGenericString() {
         // Note: Do not use literals, because string literals are always mapped by same object (internal() of String))!
         String s1_a = String.valueOf(1);
-        final TestRecursiveGenericObject<String> o1_a = new TestRecursiveGenericObject<String>(s1_a);
-        final TestRecursiveGenericObject<String> o1_b = new TestRecursiveGenericObject<String>(String.valueOf(1));
-        final TestRecursiveGenericObject<String> o2 = new TestRecursiveGenericObject<String>(String.valueOf(2));
+        final TestRecursiveGenericObject<String> o1_a = new TestRecursiveGenericObject<>(s1_a);
+        final TestRecursiveGenericObject<String> o1_b = new TestRecursiveGenericObject<>(String.valueOf(1));
+        final TestRecursiveGenericObject<String> o2 = new TestRecursiveGenericObject<>(String.valueOf(2));
 
         // To trigger bug reported in LANG-1356, call hashCode only on string in instance o1_a
         s1_a.hashCode();
@@ -1193,15 +1194,15 @@ public class EqualsBuilderTest {
         final Object[] y = new Object[]{new TestBCanEqualA(1)};
 
         // sanity checks:
-        assertTrue(Arrays.equals(x, x));
-        assertTrue(Arrays.equals(y, y));
-        assertTrue(Arrays.equals(x, y));
-        assertTrue(Arrays.equals(y, x));
+        assertArrayEquals(x, x);
+        assertArrayEquals(y, y);
+        assertArrayEquals(x, y);
+        assertArrayEquals(y, x);
         // real tests:
-        assertTrue(x[0].equals(x[0]));
-        assertTrue(y[0].equals(y[0]));
-        assertTrue(x[0].equals(y[0]));
-        assertTrue(y[0].equals(x[0]));
+        assertEquals(x[0], x[0]);
+        assertEquals(y[0], y[0]);
+        assertEquals(x[0], y[0]);
+        assertEquals(y[0], x[0]);
         assertTrue(new EqualsBuilder().append(x, x).isEquals());
         assertTrue(new EqualsBuilder().append(y, y).isEquals());
         assertTrue(new EqualsBuilder().append(x, y).isEquals());
@@ -1222,7 +1223,7 @@ public class EqualsBuilderTest {
     }
 
     @Test
-    public void testReflectionEqualsExcludeFields() throws Exception {
+    public void testReflectionEqualsExcludeFields() {
         final TestObjectWithMultipleFields x1 = new TestObjectWithMultipleFields(1, 2, 3);
         final TestObjectWithMultipleFields x2 = new TestObjectWithMultipleFields(1, 3, 4);
 
@@ -1282,11 +1283,11 @@ public class EqualsBuilderTest {
         x3.setObjectReference(refX3);
         refX3.setObjectReference(x3);
 
-        assertTrue(x1.equals(x2));
+        assertEquals(x1, x2);
         assertNull(EqualsBuilder.getRegistry());
-        assertFalse(x1.equals(x3));
+        assertNotEquals(x1, x3);
         assertNull(EqualsBuilder.getRegistry());
-        assertFalse(x2.equals(x3));
+        assertNotEquals(x2, x3);
         assertNull(EqualsBuilder.getRegistry());
     }
 
@@ -1311,7 +1312,7 @@ public class EqualsBuilderTest {
     }
 
     @Test
-    public void testReflectionArrays() throws Exception {
+    public void testReflectionArrays() {
 
         final TestObject one = new TestObject(1);
         final TestObject two = new TestObject(2);

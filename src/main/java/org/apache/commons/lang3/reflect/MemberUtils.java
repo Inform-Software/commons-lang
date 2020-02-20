@@ -135,7 +135,7 @@ abstract class MemberUtils {
     private static int compareParameterTypes(final Executable left, final Executable right, final Class<?>[] actual) {
         final float leftCost = getTotalTransformationCost(actual, left);
         final float rightCost = getTotalTransformationCost(actual, right);
-        return leftCost < rightCost ? -1 : rightCost < leftCost ? 1 : 0;
+        return Float.compare(leftCost, rightCost);
     }
 
     /**
@@ -162,7 +162,7 @@ abstract class MemberUtils {
             // When isVarArgs is true, srcArgs and dstArgs may differ in length.
             // There are two special cases to consider:
             final boolean noVarArgsPassed = srcArgs.length < destArgs.length;
-            final boolean explicitArrayForVarags = srcArgs.length == destArgs.length && srcArgs[srcArgs.length-1].isArray();
+            final boolean explicitArrayForVarags = srcArgs.length == destArgs.length && srcArgs[srcArgs.length-1] != null && srcArgs[srcArgs.length-1].isArray();
 
             final float varArgsCost = 0.001f;
             final Class<?> destClass = destArgs[destArgs.length-1].getComponentType();
@@ -227,6 +227,9 @@ abstract class MemberUtils {
      * @return The cost of promoting the primitive
      */
     private static float getPrimitivePromotionCost(final Class<?> srcClass, final Class<?> destClass) {
+        if (srcClass == null) {
+            return 1.5f;
+        }
         float cost = 0.0f;
         Class<?> cls = srcClass;
         if (!cls.isPrimitive()) {

@@ -1383,7 +1383,7 @@ public class ClassUtils {
 
             @Override
             public Iterator<Class<?>> iterator() {
-                final MutableObject<Class<?>> next = new MutableObject<Class<?>>(type);
+                final MutableObject<Class<?>> next = new MutableObject<>(type);
                 return new Iterator<Class<?>>() {
 
                     @Override
@@ -1418,7 +1418,7 @@ public class ClassUtils {
                 final Iterator<Class<?>> wrapped = classes.iterator();
 
                 return new Iterator<Class<?>>() {
-                    Iterator<Class<?>> interfaces = Collections.<Class<?>> emptySet().iterator();
+                    Iterator<Class<?>> interfaces = Collections.<Class<?>>emptySet().iterator();
 
                     @Override
                     public boolean hasNext() {

@@ -14,27 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.commons.lang3;
 
-package org.apache.commons.lang3.test;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * Annotation used with {@link SystemDefaults} that specifies the
- * system default Locale and TimeZone to be used in a test method.
+ * Tests {@link StringUtils}'s valueOf() methods.
+ *
+ * @since 3.9
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SystemDefaults {
-    /**
-     * The name of the Locale to be used while running a test method
-     */
-    String locale() default "";
-    /**
-     * The name of the TimeZone to be used while running a test method
-     */
-    String timezone() default "";
+public class StringUtilsValueOfTest {
+
+    @Test
+    public void testValueOfChar() {
+        Assertions.assertEquals("ABC", StringUtils.valueOf(new char[] {'A', 'B', 'C' }));
+    }
+
+    @Test
+    public void testValueOfCharEmpty() {
+        Assertions.assertEquals(StringUtils.EMPTY, StringUtils.valueOf(ArrayUtils.EMPTY_CHAR_ARRAY));
+    }
+
+    @Test
+    public void testValueOfCharNull() {
+        Assertions.assertNull(StringUtils.valueOf(null));
+    }
 }

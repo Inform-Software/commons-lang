@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests concurrent access for the default {@link ToStringStyle}.
@@ -68,17 +68,17 @@ public class ToStringStyleConcurrencyTest {
 
     @Test
     public void testLinkedList() throws InterruptedException, ExecutionException {
-        this.testConcurrency(new CollectionHolder<List<Integer>>(new LinkedList<Integer>()));
+        this.testConcurrency(new CollectionHolder<>(new LinkedList<>()));
     }
 
     @Test
     public void testArrayList() throws InterruptedException, ExecutionException {
-        this.testConcurrency(new CollectionHolder<List<Integer>>(new ArrayList<Integer>()));
+        this.testConcurrency(new CollectionHolder<>(new ArrayList<>()));
     }
 
     @Test
     public void testCopyOnWriteArrayList() throws InterruptedException, ExecutionException {
-        this.testConcurrency(new CollectionHolder<List<Integer>>(new CopyOnWriteArrayList<Integer>()));
+        this.testConcurrency(new CollectionHolder<>(new CopyOnWriteArrayList<>()));
     }
 
     private void testConcurrency(final CollectionHolder<List<Integer>> holder) throws InterruptedException,
